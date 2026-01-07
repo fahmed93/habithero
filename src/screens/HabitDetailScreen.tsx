@@ -14,6 +14,9 @@ import { useTheme } from '../contexts/ThemeContext';
 import { useHabits } from '../contexts/HabitContext';
 import { Habit } from '../types';
 import { HabitFormScreen } from './HabitFormScreen';
+import { HabitGrid } from '../components/HabitGrid';
+import { Calendar } from '../components/Calendar';
+import { StatisticsCard } from '../components/StatisticsCard';
 import { getCurrentStreak, getLongestStreak } from '../utils/streaks';
 import { calculateStatistics } from '../utils/statistics';
 import { getToday } from '../utils/date';
@@ -134,44 +137,26 @@ export const HabitDetailScreen: React.FC<HabitDetailScreenProps> = ({
           </TouchableOpacity>
         </View>
 
+        {/* Grid Visualization */}
+        <HabitGrid
+          habit={habit}
+          completions={completions}
+          onDayPress={async (date) => {
+            await toggleCompletion(habit.id, date);
+          }}
+        />
+
+        {/* Calendar View */}
+        <Calendar
+          habit={habit}
+          completions={completions}
+          onDayPress={async (date) => {
+            await toggleCompletion(habit.id, date);
+          }}
+        />
+
         {/* Statistics */}
-        <View style={[styles.statsSection, { backgroundColor: theme.cardBackground }]}>
-          <Text style={[styles.sectionTitle, { color: theme.text }]}>Statistics</Text>
-          <View style={styles.statsGrid}>
-            <View style={styles.statBox}>
-              <Text style={[styles.statValue, { color: theme.text }]}>
-                {stats.currentStreak}
-              </Text>
-              <Text style={[styles.statLabel, { color: theme.textSecondary }]}>
-                Current Streak
-              </Text>
-            </View>
-            <View style={styles.statBox}>
-              <Text style={[styles.statValue, { color: theme.text }]}>
-                {stats.longestStreak}
-              </Text>
-              <Text style={[styles.statLabel, { color: theme.textSecondary }]}>
-                Longest Streak
-              </Text>
-            </View>
-            <View style={styles.statBox}>
-              <Text style={[styles.statValue, { color: theme.text }]}>
-                {stats.totalCompletions}
-              </Text>
-              <Text style={[styles.statLabel, { color: theme.textSecondary }]}>
-                Total
-              </Text>
-            </View>
-            <View style={styles.statBox}>
-              <Text style={[styles.statValue, { color: theme.text }]}>
-                {stats.completionRate}%
-              </Text>
-              <Text style={[styles.statLabel, { color: theme.textSecondary }]}>
-                Completion Rate
-              </Text>
-            </View>
-          </View>
-        </View>
+        <StatisticsCard statistics={stats} />
 
         {/* Actions */}
         <View style={styles.actionsSection}>
@@ -302,31 +287,6 @@ const styles = StyleSheet.create({
   todayButtonText: {
     fontSize: 16,
     fontWeight: '600',
-  },
-  statsSection: {
-    padding: 16,
-    borderRadius: 12,
-    marginBottom: 16,
-  },
-  statsGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 12,
-  },
-  statBox: {
-    flex: 1,
-    minWidth: '45%',
-    padding: 12,
-    alignItems: 'center',
-  },
-  statValue: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    marginBottom: 4,
-  },
-  statLabel: {
-    fontSize: 12,
-    textAlign: 'center',
   },
   actionsSection: {
     gap: 12,
