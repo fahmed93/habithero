@@ -80,20 +80,81 @@ Creates an optimized production build in the `dist` folder.
 
 ```
 habithero/
-├── .github/           # GitHub Actions workflows
+├── .github/              # GitHub Actions workflows
 │   └── workflows/    
-│       └── deploy.yml # Automated deployment workflow
-├── .specify/         # Spec-kit documentation
-│   ├── memory/       # Project memory and constitution
-│   ├── scripts/      # Automation scripts
-│   └── specs/        # Feature specifications
-├── assets/           # Images, fonts, and static assets
-├── App.tsx           # Main application component
-├── app.json          # Expo configuration
-├── index.ts          # Entry point
-├── package.json      # Dependencies and scripts
-└── tsconfig.json     # TypeScript configuration
+│       └── deploy.yml    # Automated deployment workflow
+├── .specify/             # Spec-kit documentation
+│   ├── memory/           # Project memory and constitution
+│   └── specs/            # Feature specifications
+├── assets/               # Images, fonts, and static assets
+├── src/                  # Application source code
+│   ├── components/       # Reusable UI components
+│   │   ├── Button.tsx
+│   │   ├── Calendar.tsx
+│   │   ├── ColorPicker.tsx
+│   │   ├── HabitCard.tsx
+│   │   ├── HabitGrid.tsx
+│   │   ├── HabitList.tsx
+│   │   ├── IconPicker.tsx
+│   │   ├── StatisticsCard.tsx
+│   │   └── TextInput.tsx
+│   ├── contexts/         # React contexts for state management
+│   │   ├── HabitContext.tsx
+│   │   └── ThemeContext.tsx
+│   ├── screens/          # Screen components
+│   │   ├── ArchivedScreen.tsx
+│   │   ├── HabitDetailScreen.tsx
+│   │   ├── HabitFormScreen.tsx
+│   │   ├── HomeScreen.tsx
+│   │   └── SettingsScreen.tsx
+│   ├── types/            # TypeScript type definitions
+│   │   └── index.ts
+│   └── utils/            # Utility functions
+│       ├── date.ts       # Date manipulation utilities
+│       ├── statistics.ts # Statistics calculation
+│       ├── storage.ts    # Data persistence
+│       └── streaks.ts    # Streak calculation
+├── App.tsx               # Main application component
+├── app.json              # Expo configuration
+├── index.ts              # Entry point
+├── package.json          # Dependencies and scripts
+└── tsconfig.json         # TypeScript configuration
 ```
+
+## ✨ Key Features Explained
+
+### Habit Management
+- **Create & Edit**: Easily create habits with custom names, descriptions, icons, and colors
+- **Frequency Options**: Choose between daily, weekly, or monthly goals
+- **Archive**: Temporarily pause habits without losing history
+- **Delete**: Permanently remove habits when needed
+
+### Tracking & Visualization
+- **Quick Toggle**: Mark habits complete/incomplete with a single tap
+- **Grid View**: 12-week GitHub-style contribution graph shows your consistency at a glance
+- **Calendar View**: Navigate months to view and edit past completions
+- **Statistics**: Track total completions, current streak, longest streak, completion rate, and more
+
+### Data & Privacy
+- **Local Storage**: All data is stored locally on your device (AsyncStorage/localStorage)
+- **Export**: Backup your habits and progress as JSON
+- **Import**: Restore from backup or transfer to a new device (coming soon)
+- **No Analytics**: Your data stays with you, no tracking
+
+### Customization
+- **Themes**: Light, dark, or automatic (follows system preference)
+- **Icons**: Choose from dozens of icons to represent your habits
+- **Colors**: 10 vibrant colors to categorize and personalize your habits
+
+## 🎯 Usage
+
+1. **Create Your First Habit**: Tap the + button on the home screen
+2. **Customize**: Choose an icon, color, name, and frequency
+3. **Track Daily**: Mark habits complete by tapping the checkmark
+4. **View Progress**: Tap a habit to see detailed statistics, grid, and calendar
+5. **Build Streaks**: Maintain consistency to build impressive streaks
+6. **Manage**: Archive habits you're pausing, or delete ones you no longer need
+7. **Backup**: Export your data from Settings for safekeeping
 
 ## 📚 Documentation
 
