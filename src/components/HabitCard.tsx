@@ -5,6 +5,7 @@ import { Habit } from '../types';
 import { useTheme } from '../contexts/ThemeContext';
 import { useHabits } from '../contexts/HabitContext';
 import { getCurrentStreak } from '../utils/streaks';
+import { FiveDayView } from './FiveDayView';
 
 interface HabitCardProps {
   habit: Habit;
@@ -28,58 +29,70 @@ export const HabitCard: React.FC<HabitCardProps> = ({ habit, onPress }) => {
       onPress={onPress}
       activeOpacity={0.7}
     >
-      <View style={styles.leftSection}>
-        <View style={[styles.iconContainer, { backgroundColor: habit.color + '20' }]}>
-          <MaterialCommunityIcons
-            name={habit.icon as any}
-            size={28}
-            color={habit.color}
-          />
-        </View>
-        <View style={styles.habitInfo}>
-          <Text style={[styles.habitName, { color: theme.text }]} numberOfLines={1}>
-            {habit.name}
-          </Text>
-          {habit.description && (
-            <Text style={[styles.habitDescription, { color: theme.textSecondary }]} numberOfLines={1}>
-              {habit.description}
-            </Text>
-          )}
-          {streak > 0 && (
-            <View style={styles.streakBadge}>
-              <Text style={[styles.streakText, { color: theme.textSecondary }]}>
-                🔥 {streak} day{streak !== 1 ? 's' : ''}
-              </Text>
+      <View style={styles.cardContent}>
+        <View style={styles.topSection}>
+          <View style={styles.leftSection}>
+            <View style={[styles.iconContainer, { backgroundColor: habit.color + '20' }]}>
+              <MaterialCommunityIcons
+                name={habit.icon as any}
+                size={28}
+                color={habit.color}
+              />
             </View>
-          )}
+            <View style={styles.habitInfo}>
+              <Text style={[styles.habitName, { color: theme.text }]} numberOfLines={1}>
+                {habit.name}
+              </Text>
+              {habit.description && (
+                <Text style={[styles.habitDescription, { color: theme.textSecondary }]} numberOfLines={1}>
+                  {habit.description}
+                </Text>
+              )}
+              {streak > 0 && (
+                <View style={styles.streakBadge}>
+                  <Text style={[styles.streakText, { color: theme.textSecondary }]}>
+                    🔥 {streak} day{streak !== 1 ? 's' : ''}
+                  </Text>
+                </View>
+              )}
+            </View>
+          </View>
+          <TouchableOpacity
+            style={[
+              styles.checkButton,
+              isCompleted && { backgroundColor: theme.success },
+              !isCompleted && { backgroundColor: theme.surface, borderColor: theme.border, borderWidth: 2 },
+            ]}
+            onPress={handleToggle}
+            activeOpacity={0.7}
+          >
+            {isCompleted && (
+              <MaterialCommunityIcons name="check" size={20} color="#ffffff" />
+            )}
+          </TouchableOpacity>
         </View>
+        
+        {/* 5-Day Completion View */}
+        <FiveDayView habit={habit} />
       </View>
-      <TouchableOpacity
-        style={[
-          styles.checkButton,
-          isCompleted && { backgroundColor: theme.success },
-          !isCompleted && { backgroundColor: theme.surface, borderColor: theme.border, borderWidth: 2 },
-        ]}
-        onPress={handleToggle}
-        activeOpacity={0.7}
-      >
-        {isCompleted && (
-          <MaterialCommunityIcons name="check" size={20} color="#ffffff" />
-        )}
-      </TouchableOpacity>
     </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
   card: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: 16,
     borderRadius: 12,
     borderWidth: 1,
     marginBottom: 12,
+    padding: 16,
+  },
+  cardContent: {
+    flex: 1,
+  },
+  topSection: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   leftSection: {
     flexDirection: 'row',

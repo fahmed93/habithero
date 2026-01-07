@@ -127,3 +127,24 @@ export const getDayOfWeek = (date: Date): number => {
 export const isSameDay = (date1: Date, date2: Date): boolean => {
   return formatDate(date1) === formatDate(date2);
 };
+
+/**
+ * Format date for short display (e.g., "Mon 3" or "Jan 3")
+ */
+export const formatShortDate = (date: Date): string => {
+  return format(date, 'EEE d');
+};
+
+/**
+ * Get an array of the last N days including today
+ */
+export const getLastNDays = (n: number): Date[] => {
+  const today = getToday();
+  const days: Date[] = [];
+  
+  for (let i = n - 1; i >= 0; i--) {
+    days.push(addDays(today, -i));
+  }
+  
+  return days;
+};
