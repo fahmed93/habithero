@@ -1,17 +1,52 @@
 // TypeScript type definitions for HabitHero
 
-// Example types - to be expanded as the application grows
 export interface Habit {
   id: string;
   name: string;
-  icon?: string;
-  color?: string;
+  description?: string;
+  icon: string;
+  color: string;
+  frequency: 'daily' | 'weekly' | 'monthly';
+  targetPerWeek?: number; // for weekly goals
+  targetPerMonth?: number; // for monthly goals
   createdAt: Date;
+  archived: boolean;
+  reminder?: {
+    enabled: boolean;
+    time: string; // HH:MM format
+    days?: number[]; // 0-6 for Sun-Sat
+  };
 }
 
 export interface HabitCompletion {
   habitId: string;
-  completedAt: Date;
+  date: string; // YYYY-MM-DD format
+  completed: boolean;
 }
 
-// Add more types as needed
+export interface Theme {
+  background: string;
+  surface: string;
+  primary: string;
+  text: string;
+  textSecondary: string;
+  border: string;
+  success: string;
+  error: string;
+  cardBackground: string;
+  inactive: string;
+}
+
+export interface Statistics {
+  totalCompletions: number;
+  currentStreak: number;
+  longestStreak: number;
+  completionRate: number;
+  last30Days: number;
+  weeklyAverage: number;
+}
+
+export interface AppSettings {
+  theme: 'light' | 'dark' | 'auto';
+  defaultReminderTime: string;
+}
