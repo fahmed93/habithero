@@ -108,7 +108,7 @@ habithero/
 ### Running the App
 ```bash
 npm start          # Start Expo development server
-npm run web        # Run on web (typically localhost:8081)
+npm run web        # Run on web (check console for URL)
 npm run ios        # Run on iOS simulator (macOS only)
 npm run android    # Run on Android emulator
 ```
