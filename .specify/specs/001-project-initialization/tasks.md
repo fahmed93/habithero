@@ -204,7 +204,7 @@ This document contains the structured task breakdown for implementing the HabitH
 
 ### T011: Create GitHub Actions Workflow File
 **Priority**: P0 (Blocker)  
-**Dependencies**: T008  
+**Dependencies**: T006, T008, T009  
 **Estimated Effort**: 30 minutes
 
 **Description**: Create GitHub Actions workflow for automated deployment to GitHub Pages.
