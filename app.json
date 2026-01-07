@@ -27,7 +27,11 @@
     },
     "web": {
       "favicon": "./assets/favicon.png",
-      "bundler": "metro"
+      "bundler": "metro",
+      "publicPath": "/habithero/"
+    },
+    "experiments": {
+      "baseUrl": "/habithero"
     }
   }
 }
