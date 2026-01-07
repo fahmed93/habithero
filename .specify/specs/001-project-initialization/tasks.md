@@ -63,11 +63,12 @@ This document contains the structured task breakdown for implementing the HabitH
 - `src/` directory created
 - Subdirectories: `components/`, `screens/`, `navigation/`, `hooks/`, `utils/`, `types/`
 - README.md files added to empty directories
-- App.tsx moved to root (stays at root per Expo convention)
+- App.tsx remains at root (per Expo convention; differs from spec.md structure diagram)
 
 **Implementation Notes**:
-- Create directory structure as specified in spec.md
+- Create directory structure for organized code
 - Add placeholder README.md files to document purpose of each directory
+- Note: Expo requires App.tsx at project root, not in src/
 
 ---
 
@@ -292,12 +293,12 @@ This document contains the structured task breakdown for implementing the HabitH
 
 **Acceptance Criteria**:
 - All 6 acceptance criteria from spec verified:
-  1. ✓ React Native project initialized with Expo and TypeScript
-  2. ✓ Project structure follows best practices
-  3. ✓ App runs successfully on web browser
-  4. ✓ GitHub Actions workflow builds and deploys
-  5. ✓ Web app accessible at fahmed93.github.io/habithero
-  6. ✓ README.md includes setup and build instructions
+  1. React Native project initialized with Expo and TypeScript
+  2. Project structure follows best practices
+  3. App runs successfully on web browser
+  4. GitHub Actions workflow builds and deploys
+  5. Web app accessible at fahmed93.github.io/habithero
+  6. README.md includes setup and build instructions
 
 **Implementation Notes**:
 - Create checklist and verify each item
