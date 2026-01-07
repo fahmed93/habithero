@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Modal, Platform } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTheme } from '../contexts/ThemeContext';
 import { useHabits } from '../contexts/HabitContext';
 import { HabitList } from '../components/HabitList';
 import { HabitFormScreen } from './HabitFormScreen';
 import { HabitDetailScreen } from './HabitDetailScreen';
+import { SettingsScreen } from './SettingsScreen';
+import { ArchivedScreen } from './ArchivedScreen';
 import { Habit } from '../types';
 import { formatDisplayDate, getToday } from '../utils/date';
 
@@ -14,6 +17,8 @@ export default function HomeScreen() {
   const { getActiveHabits, refreshData, loading } = useHabits();
   const [showAddHabit, setShowAddHabit] = useState(false);
   const [selectedHabit, setSelectedHabit] = useState<Habit | null>(null);
+  const [showSettings, setShowSettings] = useState(false);
+  const [showArchived, setShowArchived] = useState(false);
 
   const activeHabits = getActiveHabits();
   const today = getToday();
@@ -44,6 +49,13 @@ export default function HomeScreen() {
             {dateString}
           </Text>
         </View>
+        <TouchableOpacity
+          style={styles.settingsButton}
+          onPress={() => setShowSettings(true)}
+          activeOpacity={0.7}
+        >
+          <MaterialCommunityIcons name="cog" size={24} color={theme.text} />
+        </TouchableOpacity>
       </View>
 
       {loading ? (
@@ -92,6 +104,29 @@ export default function HomeScreen() {
           />
         )}
       </Modal>
+
+      <Modal
+        visible={showSettings}
+        animationType="slide"
+        presentationStyle="pageSheet"
+        onRequestClose={() => setShowSettings(false)}
+      >
+        <SettingsScreen
+          onNavigateToArchived={() => {
+            setShowSettings(false);
+            setShowArchived(true);
+          }}
+        />
+      </Modal>
+
+      <Modal
+        visible={showArchived}
+        animationType="slide"
+        presentationStyle="pageSheet"
+        onRequestClose={() => setShowArchived(false)}
+      >
+        <ArchivedScreen onClose={() => setShowArchived(false)} />
+      </Modal>
     </View>
   );
 }
@@ -101,8 +136,14 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     paddingHorizontal: 16,
     paddingBottom: 16,
+  },
+  settingsButton: {
+    padding: 8,
   },
   greeting: {
     fontSize: 28,
