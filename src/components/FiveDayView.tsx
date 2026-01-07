@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, GestureResponderEvent } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Habit } from '../types';
 import { useTheme } from '../contexts/ThemeContext';
@@ -17,7 +17,7 @@ export const FiveDayView: React.FC<FiveDayViewProps> = ({ habit }) => {
   // Get the last 5 days including today
   const days = getLastNDays(5);
 
-  const handleToggle = async (date: Date, e: any) => {
+  const handleToggle = async (date: Date, e: GestureResponderEvent) => {
     e.stopPropagation();
     await toggleCompletion(habit.id, date);
   };
