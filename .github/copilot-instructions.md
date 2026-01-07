@@ -168,13 +168,15 @@ The following features should be implemented (see constitution.md):
 
 ### Automated Deployment
 - GitHub Actions automatically deploys to GitHub Pages on merge to `main`
+- Workflow builds the web version using `npm run export:web`
+- The `dist` folder is deployed to the `gh-pages` branch
 - Web version accessible at: https://fahmed93.github.io/habithero
 - Deployment workflow: `.github/workflows/deploy.yml`
 
 ### Manual Deployment
 ```bash
-npm run export:web  # Build the web version
-# GitHub Actions handles the rest
+npm run export:web  # Build the web version to dist/ folder
+# GitHub Actions workflow automatically deploys dist/ to gh-pages branch on merge to main
 ```
 
 ## Testing Considerations
