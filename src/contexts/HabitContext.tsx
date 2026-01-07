@@ -59,9 +59,14 @@ export const HabitProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   };
 
   const addHabit = async (habitData: Omit<Habit, 'id' | 'createdAt'>) => {
+    // Generate a more reliable unique ID using timestamp and random hex
+    const timestamp = Date.now();
+    const randomHex = Math.floor(Math.random() * 0xffffff).toString(16).padStart(6, '0');
+    const uniqueId = `habit_${timestamp}_${randomHex}`;
+    
     const newHabit: Habit = {
       ...habitData,
-      id: `habit_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      id: uniqueId,
       createdAt: new Date(),
     };
 

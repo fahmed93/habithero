@@ -1,6 +1,6 @@
 import { Habit, HabitCompletion, Statistics } from '../types';
 import { getCurrentStreak, getLongestStreak, getCompletionCount } from './streaks';
-import { getToday, addDaysToDate } from './date';
+import { getToday, addDaysToDate, formatDate } from './date';
 
 /**
  * Calculate comprehensive statistics for a habit
@@ -56,7 +56,7 @@ export const calculateOverallStatistics = (
   const totalCompletions = completions.filter(c => c.completed).length;
   
   const today = getToday();
-  const todayStr = today.toISOString().split('T')[0];
+  const todayStr = formatDate(today);
   const completionsToday = completions.filter(
     c => c.completed && c.date === todayStr
   ).length;
