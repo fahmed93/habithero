@@ -11,6 +11,7 @@ import {
   differenceInDays,
   parseISO,
   subWeeks,
+  subDays,
   addDays
 } from 'date-fns';
 
@@ -126,4 +127,47 @@ export const getDayOfWeek = (date: Date): number => {
  */
 export const isSameDay = (date1: Date, date2: Date): boolean => {
   return formatDate(date1) === formatDate(date2);
+};
+
+/**
+ * Get an array of the last N days including today
+ * @param n Number of days to return (default: 5)
+ * @param today Optional reference date (default: today)
+ * @returns Array of dates from oldest to newest (today is last)
+ */
+export const getLastNDays = (n: number = 5, today?: Date): Date[] => {
+  const reference = today || getToday();
+  const days: Date[] = [];
+  for (let i = n - 1; i >= 0; i--) {
+    const date = subDays(reference, i);
+    days.push(startOfDay(date));
+  }
+  return days;
+};
+
+/**
+ * Format date for display in header
+ * Returns "Today" for today, "Mon 5" for other dates
+ * @param date Date to format
+ * @param reference Reference date to compare (default: today)
+ */
+export const formatDayHeader = (date: Date, reference?: Date): string => {
+  const today = reference || getToday();
+  if (isSameDay(date, today)) {
+    return 'Today';
+  }
+  const dayName = format(date, 'EEE'); // Mon, Tue, etc
+  const dayNumber = format(date, 'd');  // 5, 6, etc
+  return `${dayName} ${dayNumber}`;
+};
+
+/**
+ * Get index of today in a date array
+ * @param dates Array of dates to search
+ * @param today Optional reference date (default: today)
+ * @returns Index of today, or -1 if not found
+ */
+export const getTodayIndex = (dates: Date[], today?: Date): number => {
+  const reference = today || getToday();
+  return dates.findIndex(date => isSameDay(date, reference));
 };

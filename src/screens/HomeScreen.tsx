@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Modal, Platform } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTheme } from '../contexts/ThemeContext';
 import { useHabits } from '../contexts/HabitContext';
 import { HabitList } from '../components/HabitList';
+import { DateHeader } from '../components/DateHeader';
 import { HabitFormScreen } from './HabitFormScreen';
 import { HabitDetailScreen } from './HabitDetailScreen';
 import { SettingsScreen } from './SettingsScreen';
 import { ArchivedScreen } from './ArchivedScreen';
 import { Habit } from '../types';
-import { formatDisplayDate, getToday } from '../utils/date';
+import { formatDisplayDate, getToday, getLastNDays, getTodayIndex } from '../utils/date';
 
 export default function HomeScreen() {
   const { theme, isDark } = useTheme();
@@ -23,6 +24,10 @@ export default function HomeScreen() {
   const activeHabits = getActiveHabits();
   const today = getToday();
   const dateString = formatDisplayDate(today);
+  
+  // Calculate last 5 days for completion view
+  const dates = useMemo(() => getLastNDays(5), []);
+  const todayIndex = useMemo(() => getTodayIndex(dates), [dates]);
 
   const handleHabitPress = (habit: Habit) => {
     setSelectedHabit(habit);
@@ -65,13 +70,19 @@ export default function HomeScreen() {
           </Text>
         </View>
       ) : (
-        <View style={styles.content}>
-          <HabitList
-            habits={activeHabits}
-            onHabitPress={handleHabitPress}
-            onRefresh={refreshData}
-          />
-        </View>
+        <>
+          {activeHabits.length > 0 && (
+            <DateHeader dates={dates} todayIndex={todayIndex} />
+          )}
+          <View style={styles.content}>
+            <HabitList
+              habits={activeHabits}
+              onHabitPress={handleHabitPress}
+              onRefresh={refreshData}
+              dates={dates}
+            />
+          </View>
+        </>
       )}
 
       <TouchableOpacity

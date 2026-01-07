@@ -5,15 +5,18 @@ import { Habit } from '../types';
 import { useTheme } from '../contexts/ThemeContext';
 import { useHabits } from '../contexts/HabitContext';
 import { getCurrentStreak } from '../utils/streaks';
+import { CompletionRow } from './CompletionRow';
+import { formatDate } from '../utils/date';
 
 interface HabitCardProps {
   habit: Habit;
   onPress: () => void;
+  dates?: Date[];
 }
 
-export const HabitCard: React.FC<HabitCardProps> = ({ habit, onPress }) => {
+export const HabitCard: React.FC<HabitCardProps> = ({ habit, onPress, dates }) => {
   const { theme } = useTheme();
-  const { completions, isCompletedToday, toggleCompletion } = useHabits();
+  const { completions, isCompletedToday, toggleCompletion, getCompletionForDate } = useHabits();
   const isCompleted = isCompletedToday(habit.id);
   const streak = getCurrentStreak(habit, completions);
 
@@ -22,64 +25,96 @@ export const HabitCard: React.FC<HabitCardProps> = ({ habit, onPress }) => {
     await toggleCompletion(habit.id, new Date());
   };
 
+  const handleToggleCompletion = async (date: Date) => {
+    await toggleCompletion(habit.id, date);
+  };
+
+  // Build completions map for the 5 days
+  const completionsMap = new Map<string, boolean>();
+  if (dates) {
+    dates.forEach(date => {
+      const dateStr = formatDate(date);
+      const isComplete = getCompletionForDate(habit.id, date);
+      completionsMap.set(dateStr, isComplete);
+    });
+  }
+
   return (
     <TouchableOpacity
       style={[styles.card, { backgroundColor: theme.cardBackground, borderColor: theme.border }]}
       onPress={onPress}
       activeOpacity={0.7}
     >
-      <View style={styles.leftSection}>
-        <View style={[styles.iconContainer, { backgroundColor: habit.color + '20' }]}>
-          <MaterialCommunityIcons
-            name={habit.icon as any}
-            size={28}
-            color={habit.color}
-          />
-        </View>
-        <View style={styles.habitInfo}>
-          <Text style={[styles.habitName, { color: theme.text }]} numberOfLines={1}>
-            {habit.name}
-          </Text>
-          {habit.description && (
-            <Text style={[styles.habitDescription, { color: theme.textSecondary }]} numberOfLines={1}>
-              {habit.description}
-            </Text>
-          )}
-          {streak > 0 && (
-            <View style={styles.streakBadge}>
-              <Text style={[styles.streakText, { color: theme.textSecondary }]}>
-                🔥 {streak} day{streak !== 1 ? 's' : ''}
-              </Text>
+      <View style={styles.content}>
+        <View style={styles.topSection}>
+          <View style={styles.leftSection}>
+            <View style={[styles.iconContainer, { backgroundColor: habit.color + '20' }]}>
+              <MaterialCommunityIcons
+                name={habit.icon as any}
+                size={28}
+                color={habit.color}
+              />
             </View>
-          )}
+            <View style={styles.habitInfo}>
+              <Text style={[styles.habitName, { color: theme.text }]} numberOfLines={1}>
+                {habit.name}
+              </Text>
+              {habit.description && (
+                <Text style={[styles.habitDescription, { color: theme.textSecondary }]} numberOfLines={1}>
+                  {habit.description}
+                </Text>
+              )}
+              {streak > 0 && (
+                <View style={styles.streakBadge}>
+                  <Text style={[styles.streakText, { color: theme.textSecondary }]}>
+                    🔥 {streak} day{streak !== 1 ? 's' : ''}
+                  </Text>
+                </View>
+              )}
+            </View>
+          </View>
+          <TouchableOpacity
+            style={[
+              styles.checkButton,
+              isCompleted && { backgroundColor: theme.success },
+              !isCompleted && { backgroundColor: theme.surface, borderColor: theme.border, borderWidth: 2 },
+            ]}
+            onPress={handleToggle}
+            activeOpacity={0.7}
+          >
+            {isCompleted && (
+              <MaterialCommunityIcons name="check" size={20} color="#ffffff" />
+            )}
+          </TouchableOpacity>
         </View>
-      </View>
-      <TouchableOpacity
-        style={[
-          styles.checkButton,
-          isCompleted && { backgroundColor: theme.success },
-          !isCompleted && { backgroundColor: theme.surface, borderColor: theme.border, borderWidth: 2 },
-        ]}
-        onPress={handleToggle}
-        activeOpacity={0.7}
-      >
-        {isCompleted && (
-          <MaterialCommunityIcons name="check" size={20} color="#ffffff" />
+        
+        {dates && dates.length > 0 && (
+          <CompletionRow
+            habit={habit}
+            dates={dates}
+            completions={completionsMap}
+            onToggleCompletion={handleToggleCompletion}
+          />
         )}
-      </TouchableOpacity>
+      </View>
     </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
   card: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
     padding: 16,
     borderRadius: 12,
     borderWidth: 1,
     marginBottom: 12,
+  },
+  content: {
+    flex: 1,
+  },
+  topSection: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   leftSection: {
     flexDirection: 'row',
