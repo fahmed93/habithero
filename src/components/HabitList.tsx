@@ -9,6 +9,7 @@ interface HabitListProps {
   onHabitPress: (habit: Habit) => void;
   onRefresh?: () => void;
   refreshing?: boolean;
+  dates?: Date[];
 }
 
 export const HabitList: React.FC<HabitListProps> = ({
@@ -16,6 +17,7 @@ export const HabitList: React.FC<HabitListProps> = ({
   onHabitPress,
   onRefresh,
   refreshing = false,
+  dates,
 }) => {
   const { theme } = useTheme();
 
@@ -38,7 +40,7 @@ export const HabitList: React.FC<HabitListProps> = ({
       data={habits}
       keyExtractor={(item) => item.id}
       renderItem={({ item }) => (
-        <HabitCard habit={item} onPress={() => onHabitPress(item)} />
+        <HabitCard habit={item} onPress={() => onHabitPress(item)} dates={dates} />
       )}
       contentContainerStyle={styles.listContainer}
       showsVerticalScrollIndicator={false}
